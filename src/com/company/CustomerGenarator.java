@@ -17,18 +17,20 @@ public class CustomerGenarator implements Runnable {
     public void run() {
 
         while (true) {
-            if (store.isStatus() == true) {
+            if (store.isOpen() == true) {
                 int timeInStore = getRandomNumber(minTimesInShop, maxTimesInShop);
-                String name = "Name" + getRandomNumber(0, 20);
+                String name = "Name" + getRandomNumber(0, 50);
                 Customer currentCustomer = new Customer(LocalDateTime.now(), timeInStore, name);
                 store.add(currentCustomer);
                 store.get();
-                try {
+            }
+            else {
+                System.out.println("Перерыв. Клиент проходит мимо");
+            }
+            try {
                 Thread.sleep(CustomerGenarator.getRandomNumber(2, 5) * 1_000L);
-            }
-            catch (InterruptedException e) {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
             }
         }
     }
