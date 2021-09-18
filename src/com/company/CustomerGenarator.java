@@ -15,23 +15,18 @@ public class CustomerGenarator implements Runnable {
 
     @Override
     public void run() {
-
-        while (true) {
-            if (store.isOpen() == true) {
+        try {
+            while (true) {
                 int timeInStore = getRandomNumber(minTimesInShop, maxTimesInShop);
                 String name = "Name" + getRandomNumber(0, 50);
-                Customer currentCustomer = new Customer(LocalDateTime.now(), timeInStore, name);
+                Customer currentCustomer = new Customer(timeInStore, name, LocalDateTime.now());
                 store.add(currentCustomer);
                 store.get();
-           }
-            else {
-                System.out.println("Перерыв. Клиент проходит мимо");
+                Thread.sleep(2_500);
+                //Thread.sleep(CustomerGenarator.getRandomNumber(2, 5) * 1_000L);
             }
-            try {
-                Thread.sleep(CustomerGenarator.getRandomNumber(2, 5) * 1_000L);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

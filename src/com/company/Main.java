@@ -15,12 +15,12 @@ public class Main {
     public static void main(String[] args) {
 
         Store store = new Store();
-        StoreWorkHours storeWorkHours = new StoreWorkHours(store);
+        ShopHours shopHours = new ShopHours(store);
         CustomerGenarator customerGenarator = new CustomerGenarator(store);
 
         ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*3);
 
-        service.execute(storeWorkHours);
+        service.execute(shopHours);
         service.execute(customerGenarator);
 
         service.shutdown();

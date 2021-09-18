@@ -1,19 +1,22 @@
 package com.company;
 
 import java.time.LocalDateTime;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.TreeSet;
+import java.util.*;
 
 import static java.time.temporal.ChronoUnit.SECONDS;
 
 public class Store {
 
-    //private List<Customer> customers;
-    private TreeSet<Customer> customers;
+    private List<Customer> customers;
+
     private static final int minCustomersInStore = 0;
     private static final int maxCustomersInStore = 5;
-    private boolean isOpen = true;
+
+    private boolean isOpen; // указатель рабочего времени
+
+    public Store() {
+        customers = new ArrayList<>();
+    }
 
     public boolean isOpen() {
         return isOpen;
@@ -23,96 +26,44 @@ public class Store {
         this.isOpen = isOpen;
     }
 
-    public Store() {
-        // customers = new ArrayList<>();
-        customers = new TreeSet<>();
-    }
+    // Клиенты заходят в магазин
+    public boolean add(Customer customer) {
 
-    // Добавление клиентов в магазин
-    public synchronized boolean add(Customer customer) {
-
-        if (customers.size() < maxCustomersInStore) {
-            customers.add(customer);
-            System.out.println("В магазин зашел клиент " + customer.getName());
-        } else if (customers.size() == maxCustomersInStore) {
-            System.out.println("В магазине нет места. Клиент проходит мимо ");
+        if (!isOpen() || customers.size() == maxCustomersInStore) {
+            System.out.println("Клиент уходит ");
             return false;
+        } else if (customers.size() < maxCustomersInStore) {
+            customers.add(customer);
+            System.out.println("В магазин зашел "
+                    + customer.getName() + " на "
+                    + customer.getPlanTimeShopping() + " c. В магазине клиентов: " + customers.size());
         }
         return true;
     }
 
     // Клиенты покидают магазин
-    //public List<Customer> get() {
+    public List<Customer> get() {
 
-    public TreeSet<Customer> get() throws NoSuchElementException {
-        long timeInStore;
-        long planTimeInStore;
-
-        if (!isOpen()) { //перерыв
-            customers.clear();
-            System.out.println("Все клиенты вышли из магазина.");
-            Thread.currentThread().interrupt();
-        }
-        // в рабочее время
-        else if (customers.size() > minCustomersInStore) {
-            LocalDateTime currentTime = LocalDateTime.now();
-            Iterator<Customer> iterator = customers.iterator();
-            if (iterator.hasNext()) {
-                timeInStore = SECONDS.between(iterator
-                                .next()
-                                .getTimeGenarate()
-                        , currentTime);
-                planTimeInStore = iterator.next()
-                        .getTimeInStore();
-                if (timeInStore >= planTimeInStore) {
-                    System.out.println(iterator.next()
-                            .getName() + " вышел из магазина через " +
-                            planTimeInStore + " c.");
-                    customers.remove(iterator.next());
+        while (true) {
+            if (!isOpen()) { //если перерыв - все выходят
+                customers.clear();
+             }
+            // уходят в рабочее время по истечении запланированного времени
+            else
+                if (customers.size() > minCustomersInStore) {
+                    LocalDateTime currentTime = LocalDateTime.now();
+                    for (int i = 0; i < customers.size(); i++) {
+                        long timeInStore = SECONDS.between(customers.get(i).getTimeGenarate(), currentTime);
+                        long planTimeInStore = customers.get(i).getPlanTimeShopping();
+                        if (timeInStore >= planTimeInStore) {
+                            System.out.println(customers.get(i).getName() + " вышел из магазина через " +
+                                planTimeInStore + " c.");
+                            customers.remove(i);
+                        }
+                    }
+                    return customers;
                 }
-                return customers;
-            } else {
-                timeInStore = SECONDS.between(customers
-                                .first()
-                                .getTimeGenarate()
-                        , currentTime);
-                planTimeInStore = customers.first()
-                        .getTimeInStore();
-                if (timeInStore >= planTimeInStore) {
-                    System.out.println(iterator.next()
-                            .getName() + " вышел из магазина через " +
-                            planTimeInStore + " c.");
-                    customers.remove(iterator.next());
-                }
-                return customers;
-            }
+            return null;
         }
-        return null;
     }
 }
-
-
-//                    long timeInStore = SECONDS
-//                            .between(customers
-//                                            .get(i)
-//                                            .getTimeGenarate()
-//                                    , currentTime);
-//                    long planTimeInStore = customers
-//                            .get(i)
-//                            .getTimeInStore();
-
-//                    long timeInStore = SECONDS
-//                            .between(customers
-//                                            .first()
-//                                            .getTimeGenarate()
-//                                    , currentTime);
-//                    long planTimeInStore = customers
-//                            .first()
-//                            .getTimeInStore();
-//                    if (timeInStore >= planTimeInStore) {
-//                        System.out.println(customers
-//                                .first()
-//                                .getName() + " вышел из магазина через " +
-//                                planTimeInStore + " c.");
-//                        customers.pollFirst();
-

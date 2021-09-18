@@ -2,15 +2,14 @@ package com.company;
 
 import java.time.LocalDateTime;
 
-public class Customer implements Comparable{
+public class Customer {
+    private int planTimeShopping;
     private String name;
     private LocalDateTime timeGenarate;
-    private int timeInStore;
 
-
-    public Customer(LocalDateTime timeGenarate, int timeInStore, String name) {
+    public Customer( int timeInStore, String name, LocalDateTime timeGenarate) {
         this.timeGenarate = timeGenarate;
-        this.timeInStore = timeInStore;
+        this.planTimeShopping = timeInStore;
         this.name = name;
     }
 
@@ -20,12 +19,7 @@ public class Customer implements Comparable{
     public LocalDateTime getTimeGenarate() {
         return timeGenarate;
     }
-    public int getTimeInStore() {
-        return timeInStore;
-    }
-
-    @Override
-    public int compareTo(Object o) {
-        return 0;
+    public int getPlanTimeShopping() {
+        return planTimeShopping;
     }
 }
