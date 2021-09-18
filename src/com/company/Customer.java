@@ -2,7 +2,7 @@ package com.company;
 
 import java.time.LocalDateTime;
 
-public class Customer {
+public class Customer implements Comparable{
     private String name;
     private LocalDateTime timeGenarate;
     private int timeInStore;
@@ -22,5 +22,10 @@ public class Customer {
     }
     public int getTimeInStore() {
         return timeInStore;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return 0;
     }
 }

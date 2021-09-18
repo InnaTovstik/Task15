@@ -23,7 +23,7 @@ public class CustomerGenarator implements Runnable {
                 Customer currentCustomer = new Customer(LocalDateTime.now(), timeInStore, name);
                 store.add(currentCustomer);
                 store.get();
-            }
+           }
             else {
                 System.out.println("Перерыв. Клиент проходит мимо");
             }

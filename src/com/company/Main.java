@@ -18,7 +18,7 @@ public class Main {
         StoreWorkHours storeWorkHours = new StoreWorkHours(store);
         CustomerGenarator customerGenarator = new CustomerGenarator(store);
 
-        ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*4);
+        ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*3);
 
         service.execute(storeWorkHours);
         service.execute(customerGenarator);

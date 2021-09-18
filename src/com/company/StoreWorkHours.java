@@ -12,18 +12,19 @@ public class StoreWorkHours implements Runnable {
     public void run() {
 
         while (true) {
-
                 Thread.currentThread().setName("Статус работы магазина. ");
                 System.out.println(Thread.currentThread().getName() + "Магазин открыт 30 c.");
-                store.setOpen(true);
+                store.setIsOpen(true);
                 try {
                     Thread.sleep(30_000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                store.setOpen(false);
+                store.setIsOpen(false);
+
                 store.get();
-                System.out.println(Thread.currentThread().getName() + "Перерыв на 10 с.");
+
+            System.out.println(Thread.currentThread().getName() + "Перерыв на 10 с.");
                 try {
                     Thread.sleep(10_000);
                 } catch (InterruptedException e) {
