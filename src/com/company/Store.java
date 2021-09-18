@@ -8,11 +8,10 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 public class Store {
 
     private List<Customer> customers;
+    private boolean isOpen; // указатель рабочего времени
 
     private static final int minCustomersInStore = 0;
     private static final int maxCustomersInStore = 5;
-
-    private boolean isOpen; // указатель рабочего времени
 
     public Store() {
         customers = new ArrayList<>();
@@ -47,22 +46,21 @@ public class Store {
         while (true) {
             if (!isOpen()) { //если перерыв - все выходят
                 customers.clear();
-             }
+            }
             // уходят в рабочее время по истечении запланированного времени
-            else
-                if (customers.size() > minCustomersInStore) {
-                    LocalDateTime currentTime = LocalDateTime.now();
-                    for (int i = 0; i < customers.size(); i++) {
-                        long timeInStore = SECONDS.between(customers.get(i).getTimeGenarate(), currentTime);
-                        long planTimeInStore = customers.get(i).getPlanTimeShopping();
-                        if (timeInStore >= planTimeInStore) {
-                            System.out.println(customers.get(i).getName() + " вышел из магазина через " +
+            else if (customers.size() > minCustomersInStore) {
+                LocalDateTime currentTime = LocalDateTime.now();
+                for (int i = 0; i < customers.size(); i++) {
+                    long timeInStore = SECONDS.between(customers.get(i).getTimeGenarate(), currentTime);
+                    long planTimeInStore = customers.get(i).getPlanTimeShopping();
+                    if (timeInStore >= planTimeInStore) {
+                        System.out.println(customers.get(i).getName() + " вышел из магазина через " +
                                 planTimeInStore + " c.");
-                            customers.remove(i);
-                        }
+                        customers.remove(i);
                     }
-                    return customers;
                 }
+                return customers;
+            }
             return null;
         }
     }

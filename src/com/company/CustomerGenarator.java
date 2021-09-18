@@ -13,6 +13,10 @@ public class CustomerGenarator implements Runnable {
         this.store = store;
     }
 
+    public static int getRandomNumber(int from, int to) {
+        return from + (int) (Math.random() * ((to - from) + 1));
+    }
+
     @Override
     public void run() {
         try {
@@ -28,9 +32,5 @@ public class CustomerGenarator implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    public static int getRandomNumber(int from, int to) {
-        return from + (int) (Math.random() * ((to - from) + 1));
     }
 }

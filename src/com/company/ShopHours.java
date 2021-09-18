@@ -10,26 +10,23 @@ public class ShopHours implements Runnable {
 
     @Override
     public void run() {
-
-        while (true) {
+        try {
+            while (true) {
                 store.setIsOpen(true);
                 Thread.currentThread().setName("Статус работы магазина. ");
                 System.out.println(Thread.currentThread().getName() + "Магазин открыт 30 c.");
 
-                try {
-                    Thread.sleep(30_000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                Thread.sleep(30_000);
+
                 store.setIsOpen(false);
                 store.get();
                 System.out.println("Все клиенты вышли из магазина.");
                 System.out.println(Thread.currentThread().getName() + "Перерыв на 10 с.");
-                try {
-                   Thread.sleep(10_000);
-                } catch (InterruptedException e) {
-                    System.out.println("  ");
-                }
+
+                Thread.sleep(10_000);
             }
+        } catch (InterruptedException e) {
+            System.out.println("  ");
         }
-   }
+    }
+}
